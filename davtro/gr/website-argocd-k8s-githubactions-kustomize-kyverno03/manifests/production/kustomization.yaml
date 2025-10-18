@@ -1,0 +1,9 @@
+bases:
+- ../base
+namespace: davtro
+images:
+- name: placeholder-image
+  newName: localhost:32000/davtro-website:latest
+  newTag: latest
+patchesStrategicMerge:
+- deployment-patch.yaml

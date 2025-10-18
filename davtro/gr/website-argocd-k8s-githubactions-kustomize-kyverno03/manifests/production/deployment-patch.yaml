@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: davtro-website-deployment
+spec:
+  template:
+    spec:
+      containers:
+        - name: website
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi

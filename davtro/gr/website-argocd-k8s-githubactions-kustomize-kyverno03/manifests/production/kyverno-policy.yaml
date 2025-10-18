@@ -1,0 +1,15 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-image-signature
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-signature
+    match:
+      resources:
+        kinds:
+        - Pod
+    verifyImages:
+    - image: "localhost:32000/*"
+      key: "public-key" # Dodaj klucz Cosign jeśli używasz

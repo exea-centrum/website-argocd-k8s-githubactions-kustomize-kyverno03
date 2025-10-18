@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: website-argocd-k8s-githubactions-kustomize-kyverno03-ingress
+  labels:
+    app: website-argocd-k8s-githubactions-kustomize-kyverno03
+    version: v1
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  rules:
+  - host: website-argocd-k8s-githubactions-kustomize-kyverno03.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: website-argocd-k8s-githubactions-kustomize-kyverno03-service
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - website-argocd-k8s-githubactions-kustomize-kyverno03.local
+    secretName: website-argocd-k8s-githubactions-kustomize-kyverno03-tls

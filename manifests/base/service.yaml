@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: website-argocd-k8s-githubactions-kustomize-kyverno03-service
+  labels:
+    app: website-argocd-k8s-githubactions-kustomize-kyverno03
+    version: v1
+spec:
+  selector:
+    app: website-argocd-k8s-githubactions-kustomize-kyverno03
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+  type: ClusterIP

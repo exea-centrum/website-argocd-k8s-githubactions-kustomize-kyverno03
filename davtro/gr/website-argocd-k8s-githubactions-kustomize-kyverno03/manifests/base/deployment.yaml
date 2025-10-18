@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: davtro-website-deployment
+  labels:
+    app: davtro-website-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: davtro-website-app
+  template:
+    metadata:
+      labels:
+        app: davtro-website-app
+    spec:
+      containers:
+        - name: website
+          image: placeholder-image
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_HOST
+              value: "postgres-service.davtro.svc.cluster.local"

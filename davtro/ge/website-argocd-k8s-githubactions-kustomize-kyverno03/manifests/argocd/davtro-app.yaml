@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: davtro-website
+  namespace: argocd 
+  finalizers: ["resources-finalizer.argocd.argoproj.io"]
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/TWOJA-NAZWA-UŻYTKOWNIKA-LUB-ORGANIZACJA/website-argocd-k8s-githubactions-kustomize-kyverno03.git # Pamiętaj o zmianie właściciela na Twój!
+    targetRevision: HEAD
+    path: manifests/production # Ścieżka do głównego kustomization.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: davtro
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

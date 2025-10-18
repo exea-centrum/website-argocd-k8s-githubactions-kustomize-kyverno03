@@ -1,0 +1,62 @@
+name: CI/CD Build & Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'Dockerfile'
+      - 'go.mod'
+
+env:
+  DOCKER_IMAGE: ${{ secrets.GHCR_REGISTRY }}/${{ github.repository }}
+  KUSTOMIZE_PATH: manifests/production
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      # Logowanie do GitHub Container Registry
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.GHCR_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      # Ustalanie TAGu na podstawie SHA commitu
+      - name: Set Image Tag
+        id: set_tag
+        run: echo "TAG=$(echo ${{ github.sha }} | head -c 7)" >> $GITHUB_OUTPUT
+
+      # Budowanie i push obrazu
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |${{ env.DOCKER_IMAGE }}:${{ steps.set_tag.outputs.TAG }}
+                ${{ env.DOCKER_IMAGE }}:${{ env.IMAGE_TAG_PLACEHOLDER }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Aktualizacja tagu w pliku Kustomize (Automatyzacja ArgoCD)
+      - name: Update Image Tag in Kustomize
+        uses: karancode/kustomize-image-tag-update@v1
+        with:
+          kustomize_path: ${{ env.KUSTOMIZE_PATH }}
+          image_name: ${{ env.DOCKER_IMAGE }}
+          new_tag: ${{ steps.set_tag.outputs.TAG }}
+
+      # Commit i Push zaktualizowanego pliku Kustomize
+      - name: Commit and Push Kustomize Update
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-actions[bot]
+          author_email: 41898282+github-actions[bot]@users.noreply.github.com
+          message: "GitOps: Update image tag to ${{ steps.set_tag.outputs.TAG }}"
+          add: '${{ env.KUSTOMIZE_PATH }}/kustomization.yaml'

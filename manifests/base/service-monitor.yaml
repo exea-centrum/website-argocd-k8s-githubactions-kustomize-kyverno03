@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: website-argocd-k8s-githubactions-kustomize-kyverno03-monitor
+  labels:
+    app: website-argocd-k8s-githubactions-kustomize-kyverno03
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      app: website-argocd-k8s-githubactions-kustomize-kyverno03
+  endpoints:
+  - port: 80
+    path: /metrics
+    interval: 30s
