@@ -13,7 +13,10 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 COPY --from=builder /app/main .
 COPY templates/ ./templates/
-COPY static/ ./static/
+
+# Create static directory if it doesn't exist and copy contents
+RUN mkdir -p ./static
+COPY static/ ./static/ 2>/dev/null || true
 
 EXPOSE 8080
 CMD ["./main"]
