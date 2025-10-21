@@ -9,4 +9,4 @@ resources:
 images:
 - name: website-argocd-k8s-githubactions-kustomize-kyverno03
   newName: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03/website-argocd-k8s-githubactions-kustomize-kyverno03
-  newTag: 13602a006c0f095ab28b62c854a5ff4623ea8430
+  newTag: ef3e17c1e6b251975a6630d3e0fa28e965bffc53
