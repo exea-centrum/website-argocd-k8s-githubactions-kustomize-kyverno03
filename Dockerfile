@@ -14,9 +14,9 @@ WORKDIR /root/
 COPY --from=builder /app/main .
 COPY templates/ ./templates/
 
-# Create static directory if it doesn't exist and copy contents
+# Create static directory and copy if exists
 RUN mkdir -p ./static
-COPY static/ ./static/ 2>/dev/null || true
+COPY static/ ./static/
 
 EXPOSE 8080
 CMD ["./main"]

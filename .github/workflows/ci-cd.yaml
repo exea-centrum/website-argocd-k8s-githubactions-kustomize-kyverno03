@@ -24,6 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Create static directory with files
+        run: |
+          mkdir -p static/css static/js
+          # ... (powyższy kod tworzący pliki)
+
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
@@ -60,27 +65,3 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-  update-manifests:
-    runs-on: ubuntu-latest
-    needs: build-and-test
-    if: github.event_name != 'pull_request'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update Kustomize image
-        run: |
-          cd manifests/production
-          kustomize edit set image ${{ env.IMAGE_NAME }}=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-
-      - name: Commit and push changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add manifests/production/kustomization.yaml
-          git diff --staged --quiet || git commit -m "ci: Update image to ${{ github.sha }}"
-          git push
