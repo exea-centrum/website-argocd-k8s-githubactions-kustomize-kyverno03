@@ -7,6 +7,6 @@ resources:
   - ../base
 
 images:
-  - name: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03/website-argocd-k8s-githubactions-kustomize-kyverno03
-    newName: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03/website-argocd-k8s-githubactions-kustomize-kyverno03
+  - name: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03
+    newName: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03
     newTag: latest
