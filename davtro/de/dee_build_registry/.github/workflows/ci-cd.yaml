@@ -3,8 +3,11 @@ name: Build and Deploy
 on:
   push:
     branches: [main]
+    # Wyklucza, jeśli bot jest osobą pushującą
+    # To działa tylko, jeśli akcja używa tokenu, który identyfikuje się
+    # jako 'github-actions[bot]'
     paths-ignore:
-      - "manifests/production/**"
+      - "manifests/production/**" # Dodatkowy środek ostrożności: ignoruj zmiany w manifestach
   pull_request:
     branches: [main]
 

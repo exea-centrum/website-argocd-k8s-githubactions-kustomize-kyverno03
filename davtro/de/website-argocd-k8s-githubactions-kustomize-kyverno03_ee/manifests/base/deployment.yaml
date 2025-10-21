@@ -24,7 +24,7 @@ spec:
       serviceAccountName: website-argocd-k8s-githubactions-kustomize-kyverno03-sa
       containers:
       - name: website
-        image: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03/website-argocd-k8s-githubactions-kustomize-kyverno03:latest
+        image: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03:latest
         ports:
         - containerPort: 8080
         env:

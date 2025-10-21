@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: website-argocd-k8s-githubactions-kustomize-kyverno03
-  namespace: davtro
   labels:
     app: website-argocd-k8s-githubactions-kustomize-kyverno03
     version: v1
@@ -21,10 +20,9 @@ spec:
         prometheus.io/port: "8080"
         prometheus.io/path: "/metrics"
     spec:
-      serviceAccountName: website-argocd-k8s-githubactions-kustomize-kyverno03-sa
       containers:
       - name: website
-        image: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03/website-argocd-k8s-githubactions-kustomize-kyverno03:latest
+        image: website-argocd-k8s-githubactions-kustomize-kyverno03:latest
         ports:
         - containerPort: 8080
         env:

@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: davtro
 
 resources:
-  - service-account.yaml
   - deployment.yaml
   - service.yaml
   - ingress.yaml
@@ -15,3 +14,7 @@ resources:
 commonLabels:
   app: website-argocd-k8s-githubactions-kustomize-kyverno03
   version: v1
+
+images:
+  - name: website-argocd-k8s-githubactions-kustomize-kyverno03
+    newTag: latest
