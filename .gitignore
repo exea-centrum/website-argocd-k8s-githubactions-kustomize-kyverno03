@@ -24,11 +24,6 @@ go.work
 # Kubernetes
 kubeconfig.yaml
 
-# Terraform
-.terraform/
-*.tfstate
-*.tfstate.backup
-
 # Logs
 *.log
 

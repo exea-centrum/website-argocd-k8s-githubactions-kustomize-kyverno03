@@ -6,5 +6,4 @@ manifests/
 argocd/
 policies/
 monitoring/
-terraform/
 .gitignore

@@ -8,8 +8,8 @@ Kompleksowe rozwiązanie DevOps z pełnym pipeline CI/CD, monitoringiem i polity
 - **CI/CD**: GitHub Actions + ArgoCD
 - **Infrastruktura**: Kubernetes + Kustomize
 - **Bezpieczeństwo**: Kyverno Policies
-- **Monitoring**: Prometheus + Grafana + Loki
-- **IaC**: Terraform
+- **Monitoring**: Prometheus + Grafana
+- **GitOps**: ArgoCD bezpośrednio z GitHub
 
 ## 🏗️ Struktura projektu
 
@@ -24,8 +24,7 @@ website-argocd-k8s-githubactions-kustomize-kyverno03/
 ├── .github/workflows/     # GitHub Actions
 ├── argocd/               # Konfiguracja ArgoCD
 ├── policies/             # Polityky Kyverno
-├── monitoring/           # Stack monitoringu
-└── terraform/           # Infrastruktura jako kod
+└── monitoring/           # Stack monitoringu
 ```
 
 ## ⚙️ Szybkie uruchomienie
@@ -36,15 +35,15 @@ git clone https://github.com/exea-centrum/website-argocd-k8s-githubactions-kusto
 cd website-argocd-k8s-githubactions-kustomize-kyverno03
 ```
 
-### 2. Konfiguracja GHCR
-```bash
-./setup-ghcr-secret.sh <github-username> <github-token>
-```
-
-### 3. Instalacja ArgoCD
+### 2. Instalacja ArgoCD na MicroK8s
 ```bash
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+### 3. Konfiguracja GHCR
+```bash
+./setup-ghcr-secret.sh <github-username> <github-token>
 ```
 
 ### 4. Deploy aplikacji przez ArgoCD
@@ -78,7 +77,6 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 - **Prometheus**: http://localhost:9090
 - **Grafana**: http://localhost:3000 (admin/admin)
-- **Loki**: http://localhost:3100
 
 ## 🔒 Bezpieczeństwo
 
@@ -93,11 +91,11 @@ Pipeline automatycznie:
 1. Buduje obraz Dockera
 2. Push do GHCR  
 3. Aktualizuje Kustomize
-4. ArgoCD automatycznie deployuje
+4. ArgoCD automatycznie deployuje na MicroK8s
 
 ## 📝 Logowanie
 
-Logi są zbierane przez Loki i mogą być przeglądane w Grafanie.
+Logi dostępne przez `kubectl logs`
 
 ## 🤝 Contributing
 
