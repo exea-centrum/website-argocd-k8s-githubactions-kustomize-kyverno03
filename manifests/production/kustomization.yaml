@@ -4,9 +4,12 @@ kind: Kustomization
 namespace: davtro
 
 resources:
-  - ../base
+- ../base
 
 images:
-  - name: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03
-    newName: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03
-    newTag: latest
+- name: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03
+  newName: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03
+  newTag: latest
+- name: website-argocd-k8s-githubactions-kustomize-kyverno03
+  newName: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03
+  newTag: 852ed952b00d206973719b71750312003564b424
