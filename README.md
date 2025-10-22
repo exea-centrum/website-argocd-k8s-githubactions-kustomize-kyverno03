@@ -1,22 +1,34 @@
-# 🚀 Davtro Website - ArgoCD + K8s + GitHub Actions
+# 🚀 Davtro Website - ArgoCD + K8s + GitHub Actions + Kustomize + Kyverno
 
-## 📋 Opis projektu
-Kompletne rozwiązanie strony internetowej z pełnym stackiem technologicznym:
-- **Frontend**: Go + HTML/CSS
-- **Backend**: Go + PostgreSQL
-- **CI/CD**: GitHub Actions + GHCR
-- **Deployment**: ArgoCD + Kustomize
-- **Orchestration**: Kubernetes (MicroK8s)
-- **Monitoring**: Prometheus + Grafana + Loki + Tempo
-- **Security**: Kyverno policies
-- **Infrastructure**: Terraform
+Kompleksowe rozwiązanie DevOps z pełnym pipeline CI/CD, monitoringiem i politykami bezpieczeństwa.
 
-## 🏗️ Architektura
+## 📋 Architektura
+
+- **Aplikacja**: Go + PostgreSQL
+- **CI/CD**: GitHub Actions + ArgoCD
+- **Infrastruktura**: Kubernetes + Kustomize
+- **Bezpieczeństwo**: Kyverno Policies
+- **Monitoring**: Prometheus + Grafana + Loki
+- **IaC**: Terraform
+
+## 🏗️ Struktura projektu
+
 ```
-GitHub Repository → GitHub Actions → GHCR.io → ArgoCD → MicroK8s → Website
+website-argocd-k8s-githubactions-kustomize-kyverno03/
+├── src/                    # Kod źródłowy Go
+├── templates/              # Szablony HTML
+├── static/                 # Pliki statyczne
+├── manifests/             # Manifesty K8s
+│   ├── base/              # Bazowe manifesty
+│   └── production/        # Overlay production
+├── .github/workflows/     # GitHub Actions
+├── argocd/               # Konfiguracja ArgoCD
+├── policies/             # Polityky Kyverno
+├── monitoring/           # Stack monitoringu
+└── terraform/           # Infrastruktura jako kod
 ```
 
-## 🚀 Szybki start
+## ⚙️ Szybkie uruchomienie
 
 ### 1. Inicjalizacja
 ```bash
@@ -24,50 +36,77 @@ git clone https://github.com/exea-centrum/website-argocd-k8s-githubactions-kusto
 cd website-argocd-k8s-githubactions-kustomize-kyverno03
 ```
 
-### 2. Deploy ArgoCD Application
+### 2. Konfiguracja GHCR
+```bash
+./setup-ghcr-secret.sh <github-username> <github-token>
+```
+
+### 3. Instalacja ArgoCD
+```bash
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+### 4. Deploy aplikacji przez ArgoCD
 ```bash
 kubectl apply -f argocd/application.yaml
 ```
 
-### 3. Monitoring
+### 5. Dostęp do ArgoCD
 ```bash
-kubectl create namespace monitoring
-kubectl apply -f monitoring/monitoring-stack.yaml
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+# Login: admin, Hasło: kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
-
-### 4. Kyverno Policies
-```bash
-kubectl apply -f policies/kyverno-policy.yaml
-```
-
-## 📊 Endpoints
-- 🌐 **Website**: http://website-argocd-k8s-githubactions-kustomize-kyverno03.local
-- 📡 **API**: /api/data
-- 📈 **Metrics**: /metrics  
-- ❤️ **Health**: /health
-- 🎯 **ArgoCD**: http://argocd.local
-- 📊 **Prometheus**: http://prometheus.monitoring.svc:9090
 
 ## 🔧 Konfiguracja
 
 ### Zmienne środowiskowe
-```
-DB_HOST=postgres-service
-DB_PORT=5432
-DB_USER=davtro
-DB_PASSWORD=password123
-DB_NAME=davtro_db
-PORT=8080
-```
+- `DB_HOST`: Host PostgreSQL
+- `DB_PORT`: Port PostgreSQL  
+- `DB_USER`: Użytkownik bazy
+- `DB_PASSWORD`: Hasło bazy
+- `DB_NAME`: Nazwa bazy
+- `PORT`: Port aplikacji (domyślnie 8080)
 
-## 📈 Monitoring
-- Prometheus metrics dostępne pod /metrics
-- ServiceMonitor dla Prometheus
-- Health checks i readiness probes
-- Resource limits i requests
+### Endpointy
+- `/`: Strona główna
+- `/health`: Health check
+- `/metrics`: Metryki Prometheus
+- `/api/data`: API JSON
 
-## 🛡️ Bezpieczeństwo
-- Kyverno policies dla compliance
-- Resource limits
-- Readiness/liveness probes
-- TLS via cert-manager
+## 📊 Monitoring
+
+- **Prometheus**: http://localhost:9090
+- **Grafana**: http://localhost:3000 (admin/admin)
+- **Loki**: http://localhost:3100
+
+## 🔒 Bezpieczeństwo
+
+Polityki Kyverno:
+- Wymagane etykiety na zasobach
+- Blokada namespace `default`
+- Wymagane limity zasobów
+
+## 🚀 GitHub Actions
+
+Pipeline automatycznie:
+1. Buduje obraz Dockera
+2. Push do GHCR  
+3. Aktualizuje Kustomize
+4. ArgoCD automatycznie deployuje
+
+## 📝 Logowanie
+
+Logi są zbierane przez Loki i mogą być przeglądane w Grafanie.
+
+## 🤝 Contributing
+
+1. Fork the project
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## 📄 Licencja
+
+MIT License - szczegóły w pliku LICENSE.

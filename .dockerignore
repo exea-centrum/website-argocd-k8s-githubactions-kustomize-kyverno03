@@ -1,0 +1,10 @@
+.git
+.github
+Dockerfile
+README.md
+manifests/
+argocd/
+policies/
+monitoring/
+terraform/
+.gitignore

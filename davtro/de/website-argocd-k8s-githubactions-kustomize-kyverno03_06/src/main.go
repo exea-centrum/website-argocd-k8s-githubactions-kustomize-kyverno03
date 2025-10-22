@@ -51,7 +51,7 @@ type PageData struct {
 
 type ScrapedData struct {
 	ID      int       `json:"id"`
-	Title   string    `json:"title"`
+	Title   string    `json:"title"
 	Content string    `json:"content"`
 	Created time.Time `json:"created"`
 }
