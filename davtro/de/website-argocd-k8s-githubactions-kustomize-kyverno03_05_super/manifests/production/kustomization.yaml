@@ -5,10 +5,6 @@ namespace: davtro
 
 resources:
   - ../base
-  - ../../monitoring/monitoring-namespace.yaml
-  - ../../monitoring/prometheus.yaml
-  - ../../monitoring/grafana.yaml
-  - ../../monitoring/loki.yaml
 
 images:
   - name: ghcr.io/exea-centrum/website-argocd-k8s-githubactions-kustomize-kyverno03

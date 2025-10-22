@@ -14,8 +14,8 @@ WORKDIR /root/
 COPY --from=builder /app/main .
 COPY templates/ ./templates/
 
-# Create static directories and copy files
-RUN mkdir -p ./static/css ./static/js
+# Create static directory and copy if exists
+RUN mkdir -p ./static
 COPY static/ ./static/
 
 EXPOSE 8080
