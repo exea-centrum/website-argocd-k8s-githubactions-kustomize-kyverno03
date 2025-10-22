@@ -10,7 +10,8 @@ spec:
   selector:
     app: website-argocd-k8s-githubactions-kustomize-kyverno03
   ports:
-  - port: 80
-    targetPort: 8080
-    protocol: TCP
+    - name: http-metrics # Dodaj nazwę portu
+      port: 80
+      targetPort: 8080
+      protocol: TCP
   type: ClusterIP

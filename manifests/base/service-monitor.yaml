@@ -11,6 +11,6 @@ spec:
     matchLabels:
       app: website-argocd-k8s-githubactions-kustomize-kyverno03
   endpoints:
-  - port: 80
-    path: /metrics
-    interval: 30s
+    - port: http-metrics # Używamy nazwy portu zamiast numeru
+      path: /metrics
+      interval: 30s
